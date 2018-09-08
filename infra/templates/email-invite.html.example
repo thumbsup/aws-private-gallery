@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <style>
+      h1 {
+        font-size: 1.3em;
+        margin-bottom: 1.5em;
+      }
+      pre {
+        font-size: 1.2em;
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to the gallery</h1>
+    <p>
+      Your username is {username} and your temporary password is <code>{####}</code>.
+      You will have to change this password on first login.
+    </p>
+  </body>
+</html>

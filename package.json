@@ -1,0 +1,20 @@
+{
+  "name": "private-website",
+  "version": "1.0.0",
+  "description": "Private website hosted on AWS",
+  "author": "",
+  "license": "MIT",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "docs": "npm run docs-login && npm run docs-logout",
+    "docs-login": "mmdc -i docs/login.mmd -o docs/login.png",
+    "docs-logout": "mmdc -i docs/logout.mmd -o docs/logout.png"
+  },
+  "dependencies": {
+    "mermaid.cli": "^0.3.6"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,17 @@
+#
+# This is where the terraform state will be stored.
+# Leave blank if you wish to keep the state file locally.
+#
+
+terraform {
+  backend "s3" {
+    # AWS credentials
+    shared_credentials_file = "~/.aws/credentials"
+    profile                 = "myprofile"
+
+    # Target S3 bucket
+    bucket                  = "terraform_state_bucket"
+    region                  = "ap-southeast-2"
+    key                     = "state"
+  }
+}

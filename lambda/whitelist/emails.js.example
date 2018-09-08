@@ -1,0 +1,10 @@
+//
+// List of emails that are allowed to
+// - self-sign-up
+// - be manually invited by admins in the Cognito UI
+// - login via Google/Facebook single-sign-on
+//
+module.exports = [
+  'test1@test.com',
+  'test2@test.com'
+]

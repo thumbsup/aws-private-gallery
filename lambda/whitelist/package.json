@@ -1,0 +1,14 @@
+{
+  "name": "lambda-cognito-whitelist",
+  "version": "1.0.0",
+  "description": "AWS Lambda function to whitelist Cognito users",
+  "author": "thumbsup",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

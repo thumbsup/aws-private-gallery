@@ -1,0 +1,9 @@
+node_modules
+lambda/*/node_modules
+lambda/*.zip
+lambda/whitelist/emails.js
+infra/.terraform
+infra/terraform.tfstate*
+infra/terraform.tfvars
+infra/backend.tf
+infra/templates/email-invite.html

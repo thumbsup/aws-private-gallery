@@ -1,0 +1,22 @@
+sequenceDiagram
+
+    participant Browser
+    participant CloudFront
+    participant Lambda
+    participant Cognito
+
+    Note left of Browser: Users chooses to logout
+    Browser->>+CloudFront: /api/logout
+    CloudFront->>+Lambda: call
+    Note right of Lambda: Remove CloudFront cookies
+    Lambda->>-Browser: HTTP 302 removing cookies
+
+    Note left of Browser: Follow the redirect
+    Browser->>+Cognito: /logout
+    Note right of Cognito: Remove Cognito cookies
+    Cognito->>-Browser: 302 removing cookies
+
+    Note left of Browser: Follow the redirect
+    Browser->>+Cognito: /login
+    Cognito->>-Browser: Login page
+    Note left of Browser: Render the standard Cognito login page
