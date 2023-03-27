@@ -66,6 +66,44 @@ cd lambda
 ./build.sh
 ```
 
+### 4. Setup your CloudFront private key
+
+Authentication relies on cookies signed with a key pair.
+This is a sensitive value, so the stack expects it to be stored encrypted in
+[SSM Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html).
+
+First, generate a new key pair locally:
+
+``` bash
+openssl genrsa -out private_key.pem 2048
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+```
+
+Then store the public key on CloudFront:
+
+1. Open the CloudFront UI
+2. Navigate to "Key management", then "Public keys"
+3. Upload the public key, and take note of the Key ID you receive
+4. Navigate to the "Key group" section just underneath
+5. Create a new key group which includes the public key above
+
+Then store the values in Parameter Store:
+
+1. Open the Parameter Store UI
+2. Create the 2 following entries:
+
+| Name | Type | KMS Key ID | Value | Example |
+|------|------|------------|-------|---------|
+| `cloudfront_keypair_id`  | `String` | - | Public ID of the key pair | `ABC123456789` |
+| `cloudfront_private_key` | `Secure String` | `alias/aws/ssm` | Contents of the private key | `-----BEGIN RSA PRIVATE KEY-----`<br />`...`<br/>`-----END RSA PRIVATE KEY-----` |
+
+You should then delete the private key you have downloaded.
+AWS recommends rotating this key pair every 3 months.
+
+*Note:* the Parameter Store values are cached in the Lambda function to speed up invocation.
+When you rotate the key pair, the old value will still be used until the next **Lambda cold start**.
+You can re-deploy the Lambda function to force a cold-start.
+
 ### 4. Deploy infrastructure
 
 The whole infrastructure is written as [Terraform](https://www.terraform.io/) templates.
@@ -84,28 +122,12 @@ terraform apply
 
 If you make any subsequent changes, simply re-run `terraform apply` to apply the update.
 
-### 5. Setup your CloudFront private key
+!!NOTE!! The code has not yet been updated to take advantage of CloudFront Keypairs.
+Once deployed, you must:
 
-Authentication relies on cookies signed with your CloudFront private key.
-This is a very sensitive value, so the stack expects it to be stored encrypted in
-[SSM Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html).
-
-1. Login with your AWS **root** account
-2. From the top-menu, navigate to "My security credentials"
-3. Click "Generate a CloudFront key pair"
-4. Take note of the key pair ID
-5. Download the private key somewhere safe
-6. Go to https://aws.amazon.com/ec2/systems-manager/parameter-store/
-7. Create the 2 following entries:
-
-| Name | Type | KMS Key ID | Value | Example |
-|------|------|------------|-------|---------|
-| `cloudfront_keypair_id`  | `String` | - | Public ID of the key pair | `APK123456789` |
-| `cloudfront_private_key` | `Secure String` | `alias/aws/ssm` | Contents of the private key | `-----BEGIN RSA PRIVATE KEY-----`<br />`...`<br/>`-----END RSA PRIVATE KEY-----` |
-
-You should then delete the private key you have downloaded.
-AWS recommends rotating this key pair every 3 months.
-Simply choose `edit parameter` in the Parameter Store UI to enter the new values when required.
+- go into the CloudFront distribution
+- edit the "behaviours" section for **HTML** and **Default**
+- update `Trusted authorization type` from `Self` to the keygroup you created above
 
 ### 6. Create users
 
