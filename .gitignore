@@ -1,4 +1,3 @@
-node_modules
 lambda/*/node_modules
 lambda/*.zip
 lambda/whitelist/emails.js
