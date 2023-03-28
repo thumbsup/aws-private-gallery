@@ -1,4 +1,7 @@
-FROM lambci/lambda:build
+FROM public.ecr.aws/lambda/nodejs:16
+
+# Install extra utilities
+RUN yum update -y && yum install zip -y
 
 # working folder
 RUN mkdir /build
