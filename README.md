@@ -139,6 +139,9 @@ The final step is to create a user so you can go through the login page.
 - Click "Users and groups", then "Create user"
 - Provide an email address and temporary password
 
+Make sure that this email address is part of email whitelist (`emails.js`).
+This validation is done on _all_ logins, both for local Cognito users and social sign-in (if configured).
+
 ### That's it!
 
 You should now be able to browse to https://your-gallery.com and be prompted to login.
