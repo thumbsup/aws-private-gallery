@@ -5,6 +5,18 @@ data "aws_acm_certificate" "domain" {
   most_recent = true
 }
 
+resource "aws_cloudfront_public_key" "cookie_signer" {
+  comment     = "Cookie signer public key"
+  encoded_key = file("public_key.pem")
+  name        = "cookie-signer"
+}
+
+resource "aws_cloudfront_key_group" "cookie_signer" {
+  comment = "example key group"
+  items   = [aws_cloudfront_public_key.cookie_signer.id]
+  name    = "cookie-signer"
+}
+
 resource "aws_cloudfront_distribution" "distribution" {
   aliases             = ["${var.website_domain}"]
   price_class         = "PriceClass_100"
@@ -87,7 +99,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     path_pattern                = "/api/*"
     smooth_streaming            = false
     target_origin_id            = "Login API gateway"
-    trusted_signers             = []
+    trusted_key_groups          = [aws_cloudfront_key_group.cookie_signer.name]
     viewer_protocol_policy      = "https-only"
 
     forwarded_values {
@@ -142,7 +154,7 @@ resource "aws_cloudfront_distribution" "distribution" {
     min_ttl                     = 15552000
     smooth_streaming            = false
     target_origin_id            = "S3-${var.s3_bucket_name}"
-    trusted_signers             = ["self"]
+    trusted_key_groups          = [aws_cloudfront_key_group.cookie_signer.name]
     lambda_function_association = []
     viewer_protocol_policy      = "redirect-to-https"
 
