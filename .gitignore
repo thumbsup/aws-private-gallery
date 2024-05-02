@@ -6,3 +6,4 @@ infra/terraform.tfstate*
 infra/terraform.tfvars
 infra/backend.tf
 infra/templates/email-invite.html
+infra/*.pem
