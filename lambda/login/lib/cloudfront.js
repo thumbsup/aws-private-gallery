@@ -1,4 +1,4 @@
-const AWS = require('aws-sdk')
+const AWS = require('@aws-sdk/client-ssm')
 const cloudfront = require('aws-cloudfront-sign')
 
 exports.getKeyPair = function () {

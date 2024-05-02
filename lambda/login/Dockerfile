@@ -1,7 +1,7 @@
-FROM public.ecr.aws/lambda/nodejs:16
+FROM public.ecr.aws/lambda/nodejs:20
 
 # Install extra utilities
-RUN yum update -y && yum install zip -y
+RUN dnf update -y && dnf install zip -y
 
 # working folder
 RUN mkdir /build
