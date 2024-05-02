@@ -12,13 +12,13 @@ exports.handle = function (event, callback) {
     `client_id=${config.clientId}`,
     `redirect_uri=https://${config.websiteDomain}/api/callback`
   ]
-  headers['Location'] = `${config.cognitoApi}/logout?` + params.join('&')
+  headers.Location = `${config.cognitoApi}/logout?` + params.join('&')
 
   // Return the 302 redirect
   callback(null, {
     statusCode: 302,
     body: 'Logout successful',
-    headers: headers,
+    headers,
     isBase64Encoded: false
   })
 }

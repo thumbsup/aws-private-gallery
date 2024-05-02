@@ -43,18 +43,18 @@ exports.handle = function (event, callback) {
     const headers = cloudfront.sign(config.websiteDomain, config.sessionDuration, keypair.keyPairId, keypair.privateKey)
     callback(null, redirect(headers))
   })
-  .catch(err => {
-    if (err.response) {
-      console.error('HTTP error', err.response.status, err.response.data)
-    } else {
-      console.error('Unknown error', err)
-    }
-    callback(null, errorResponse(500, 'Authentication failed'))
-  })
+    .catch(err => {
+      if (err.response) {
+        console.error('HTTP error', err.response.status, err.response.data)
+      } else {
+        console.error('Unknown error', err)
+      }
+      callback(null, errorResponse(500, 'Authentication failed'))
+    })
 }
 
 function memoise (fn) {
-  var value = null
+  let value = null
   return function () {
     if (!value) {
       const args = Array.prototype.slice.call(arguments)
@@ -76,11 +76,11 @@ function errorResponse (code, message) {
 }
 
 function redirect (headers) {
-  headers['Location'] = '/'
+  headers.Location = '/'
   return {
     statusCode: 302,
     body: 'Authentication successful',
-    headers: headers,
+    headers,
     isBase64Encoded: false
   }
 }

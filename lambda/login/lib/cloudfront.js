@@ -29,7 +29,7 @@ exports.sign = function (domain, sessionDuration, keypairId, privateKey) {
   // with a cryptographic signature to prove who issued the policy
   const signedCookies = cloudfront.getSignedCookies(`https://${domain}/*`, {
     expireTime: new Date().getTime() + (sessionDuration * 1000),
-    keypairId: keypairId,
+    keypairId,
     privateKeyString: privateKey
   })
   // return cookies as a hash for Lambda
