@@ -8,7 +8,7 @@ RUN mkdir /build
 WORKDIR /build
 
 # install dependencies (highly cacheable)
-COPY package.json /build/package.json
+COPY package*.json /build/
 RUN npm install
 
 # add source code
