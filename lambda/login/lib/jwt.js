@@ -4,7 +4,7 @@ const jwkToPem = require('jwk-to-pem')
 exports.verify = function (token, keySet) {
   // Decode the JWT token to find the JWK ID
   const decoded = jwt.decode(token, {complete: true})
-  console.log(`Received JWT user=${decoded['cognito:username']}, email=${decoded['email']}`)
+  console.log(`Received JWT user=${decoded.payload['cognito:username']}, email=${decoded.payload['email']}`)
   // Verify the JWT
   const pem = getMatchingPem(keySet, decoded.header.kid)
   jwt.verify(token, pem, { algorithms: ['RS256'] })
