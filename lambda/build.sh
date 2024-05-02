@@ -7,7 +7,9 @@ echo '---------------------------'
 echo ''
 
 (cd login && docker build -t "cloudfront-cookies" .)
-docker run "cloudfront-cookies" > login.zip
+container_id=$(docker create cloudfront-cookies)
+docker cp $container_id:/build/dist.zip login.zip
+docker rm $container_id
 
 echo ''
 echo '---------------------------'

@@ -18,6 +18,5 @@ COPY lib/ /build/lib/
 # Run tests & prune dev dependencies
 RUN npm test && npm prune --production
 
-# zip entire context and stream output
+# zip entire node app
 RUN zip -r /build/dist.zip . > /dev/null
-CMD ["cat", "/build/dist.zip"]
